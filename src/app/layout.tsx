@@ -9,11 +9,22 @@ const inter = Inter({
   display: "swap",
 });
 
+/**
+ * Resolved at build time. Vercel supplies VERCEL_PROJECT_PRODUCTION_URL, so the
+ * deployed site gets the right absolute URLs for OG images with no manual edit.
+ * Set NEXT_PUBLIC_SITE_URL to override (e.g. once a custom domain is attached).
+ */
+const siteUrl =
+  process.env.NEXT_PUBLIC_SITE_URL ||
+  (process.env.VERCEL_PROJECT_PRODUCTION_URL
+    ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
+    : "http://localhost:3000");
+
 const description =
   "Portfolio of Palak Saxena — ITIL 4 certified ITSM Lead at Cognizant, specialising in ServiceNow Incident & Change Management, Active Directory, Windows Server and enterprise infrastructure support.";
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://palaksaxena.vercel.app"),
+  metadataBase: new URL(siteUrl),
   title: {
     default: `${profile.name} — ITSM Lead | ServiceNow | ITIL 4`,
     template: `%s | ${profile.name}`,
@@ -77,7 +88,7 @@ const personSchema = {
   jobTitle: profile.title,
   email: `mailto:${profile.email}`,
   telephone: profile.phone,
-  url: "https://palaksaxena.vercel.app",
+  url: siteUrl,
   image: profile.photo,
   sameAs: [profile.linkedin],
   address: {
